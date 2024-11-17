@@ -2,6 +2,8 @@
 clear
 echo "Hello! Welcome to the Auto Arch Linux Installer!"
 echo ""
+echo For help and support see https://github.com/bitbasket/AutoArchLinux/
+echo ""
 
 echo "Set password for root: "
 passwd
@@ -20,8 +22,9 @@ locale-gen
 pacman -Syu
 pacman -S --noconfirm git vim sudo docker xfsprogs btrfs-progs mdadm linux-lts \
                       openssh grub efibootmgr dmidecode gdisk dosfstools net-tools \
-                      ack
+                      ack nano
 systemctl enable sshd
+usermod -a -G docker $user
 
 clear
 echo "Generate SSH key for root:"
@@ -124,3 +127,31 @@ setfacl -Rm g:users:rwX /code
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 sudo -u ${user} makepkg -si
+
+ln -s /usr/share/zoneinfo/UTC /etc/localtime
+
+clear
+cat <<LETTER
+Your system should now be fully installed!
+
+We have done the following:
+ - Rationally partitioned the drives into
+    - EFI / BIOS
+    - / [btrfs, daily snapshots]; 100 GB RAID-0
+    - /code, /var/www, /important [btrfs, hourly snapshots], 100 GB RAID-1
+    - /var/lib/docker [btrfs], 10 GB RAID-0
+    - /storage [xfs], remaing space, RAID-1
+ - Installed Arch Linux
+ - Installed Git, Docker, Vim, nano, base-devel, OpenSSH and legacy network tools.
+ - Installed the Linux-LTS kernel.
+ - Automatically setup the network via systemd's networkd in /etc/systemd/network/.
+ - Installed sudo and setup a sudo user.
+ - Set up an OpenSSH server.
+ - Configured the time zone to UTC (/etc/localtime).
+ - Configured the system to use CloudFlare DNS (1.1.1.1) and Google DNS (8.8.8.8).
+ - Installed the AUR package manager yay.
+
+For help and support see https://github.com/bitbasket/AutoArchLinux/
+
+Now, reboot your system and pray that it all works fine.
+LETTER
