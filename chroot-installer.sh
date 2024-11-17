@@ -23,11 +23,16 @@ pacman -S --noconfirm git vim sudo docker xfsprogs btrfs-progs mdadm linux-lts \
                       ack
 systemctl enable sshd
 
+clear
 echo "Generate SSH key for root:"
 ssh-keygen -t ed25519
 
+clear
 echo "Generate SSH for the local admin ($user)..."
-echo "Make sure you set a password, as this key will also be used for sudo auth..."
+echo ====================================================================================
+echo === Make sure you set a password, as this key will also be used for sudo auth... ===
+echo ====================================================================================
+
 sudo -u $user ssh-keygen -t ed25519
 
 genfstab -U / > /etc/fstab
@@ -100,6 +105,7 @@ systemctl enable systemd-networkd
 
 # Fix Archstrap's PS1:
 cat >> /etc/bash.bashrc <<BASH
+
 if [ $(id -u) -eq 0 ]; then 
     export PS1='\[\033[01;31m\]\h \[\033[01;34m\]\W # \[\033[00m\]'; 
 else
