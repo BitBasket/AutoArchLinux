@@ -100,4 +100,4 @@ mkdir -p /media/media/true-root
 mount -o subvol=/ /dev/md0 /media/media/true-root/
 
 cp -avf ../AutoArchLinux /media/code
-arch-chroot /media /code/AutoArchLinux/chroot-installer.sh
+chroot /media /code/AutoArchLinux/chroot-installer.sh
