@@ -22,7 +22,7 @@ locale-gen
 pacman -Syu
 pacman -S --noconfirm git vim sudo docker xfsprogs btrfs-progs mdadm linux-lts \
                       openssh grub efibootmgr dmidecode gdisk dosfstools net-tools \
-                      ack nano
+                      ack nano gptfdisk
 systemctl enable sshd
 usermod -a -G docker $user
 

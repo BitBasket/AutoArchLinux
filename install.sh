@@ -101,5 +101,7 @@ btrfs subvolume set-default $(btrfs subvolume list /media | grep @rootfs | awk '
 mkdir -p /media/media/true-root
 mount -o subvol=/ /dev/md0 /media/media/true-root/
 
-cp -avf $ORIG_PWD/AutoArchLinux /media/code
-chroot /media /code/AutoArchLinux/chroot-installer.sh
+cp -avf $ORIG_PWD /media/code
+
+#echo "You must now run this command:"
+arch-chroot /media /code/AutoArchLinux/chroot-installer.sh
