@@ -1,8 +1,6 @@
 #!/bin/bash
 
-curl -LO https://gist.githubusercontent.com/bhelm/65283c37a0cb585089041214002df4f7/raw/536099a5f969a6888c85e48a487ec19870c596a2/arch-chroot.sh
-chmod 0755 arch-chroot.sh
-mv arch-chroot.sh /usr/bin/arch-chroot
+cp arch-chroot.sh /usr/bin/arch-chroot
 
 sfdisk /dev/nvme0n1 < partition-table.sfdisk
 sfdisk /dev/nvme1n1 < partition-table.sfdisk
