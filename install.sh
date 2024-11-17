@@ -1,9 +1,21 @@
 #!/bin/bash
 
+clear
+
+echo "WARNING!!! WARNING!!!"
+read -p "This will install Arch Linux, automagically. But it will ERASE ALL DATA ON HARD DRIVES. Continue? (y/N) " yesOrNo
+if [ $yesOrNo != 'y' ]; then
+    echo "Bailing out!!"
+    exit
+fi
+
 cp arch-chroot.sh /usr/bin/arch-chroot
 
 sfdisk /dev/nvme0n1 < partition-table.sfdisk
 sfdisk /dev/nvme1n1 < partition-table.sfdisk
+
+# Destroy existing RAID arrays.
+#mdadm --zero-superblock /dev/nvme0n1p2 /dev/nvme1n1p2 /dev/nvme0n1p3 /dev/nvme1n1p3 /dev/nvme0n1p4 /dev/nvme1n1p4 /dev/nvme0n1p5 /dev/nvme1n1p5
 
 # /
 mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/nvme0n1p2 /dev/nvme1n1p2
