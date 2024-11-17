@@ -1,6 +1,7 @@
 #!/bin/bash
-
-echo "Hello, Arch Linux!"
+clear
+echo "Hello! Welcome to the Auto Arch Linux Installer!"
+echo ""
 
 echo "Set password for root: "
 passwd

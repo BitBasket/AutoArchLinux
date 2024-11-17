@@ -2,7 +2,8 @@
 
 clear
 
-echo "WARNING!!! WARNING!!!"
+echo "                        WARNING!!! WARNING!!!"
+echo " "
 read -p "This will install Arch Linux, automagically. But it will ERASE ALL DATA ON HARD DRIVES. Continue? (y/N) " yesOrNo
 if [ $yesOrNo != 'y' ]; then
     echo "Bailing out!!"
@@ -97,3 +98,6 @@ btrfs subvolume set-default $(btrfs subvolume list /media | grep @rootfs | awk '
 
 mkdir -p /media/media/true-root
 mount -o subvol=/ /dev/md0 /media/media/true-root/
+
+cp -avf ../AutoArchLinux /media/code
+arch-chroot /media /code/AutoArchLinux/chroot-installer.sh
