@@ -54,6 +54,8 @@ cd -
 umount /media
 mount -o compress=lzo,subvol=@rootfs /dev/md0 /media
 
+ORIG_PWD=$PWD
+
 cd /media
 mkdir code
 mount /dev/md2 code
@@ -99,5 +101,5 @@ btrfs subvolume set-default $(btrfs subvolume list /media | grep @rootfs | awk '
 mkdir -p /media/media/true-root
 mount -o subvol=/ /dev/md0 /media/media/true-root/
 
-cp -avf ../AutoArchLinux /media/code
+cp -avf $ORIG_PWD/AutoArchLinux /media/code
 chroot /media /code/AutoArchLinux/chroot-installer.sh
