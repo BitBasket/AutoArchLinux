@@ -81,7 +81,7 @@ IPV6_GATEWAY=$(ip -6 route show default | awk '{print $3}')
 
 cat > /etc/systemd/network/10-wired.network <<CONFIG
 [Match]
-Match=${MAC_ADDRESS}
+MACAddress=${MAC_ADDRESS}
 
 [Network]
 Address=${IPV4_ADDRESS}
@@ -150,6 +150,7 @@ We have done the following:
  - Configured the time zone to UTC (/etc/localtime).
  - Configured the system to use CloudFlare DNS (1.1.1.1) and Google DNS (8.8.8.8).
  - Installed the AUR package manager yay.
+ - Set up to use Gentoo's PS1 for the CLI.
 
 For help and support see https://github.com/bitbasket/AutoArchLinux/
 
