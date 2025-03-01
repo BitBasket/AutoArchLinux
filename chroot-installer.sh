@@ -20,9 +20,13 @@ locale-gen
 
 
 pacman -Syu
-pacman -S --noconfirm git vim sudo docker xfsprogs btrfs-progs mdadm linux-lts \
-                      openssh grub efibootmgr dmidecode gdisk dosfstools net-tools \
-                      ack nano gptfdisk
+pacman -S --noconfirm git vim sudo plocate xfsprogs btrfs-progs mdadm linux-lts \
+                      openssh grub efibootmgr dmidecode gdisk nano net-tools \
+                      ack gptfdisk less rsync cronie tmux screen dosfstools \
+                      bash-completion nvme-cli docker docker-compose \
+                      wget aria2 axel p7zip
+ln -s /usr/bin/vendor_perl/ack /usr/local/bin
+
 systemctl enable sshd
 usermod -a -G docker $user
 
@@ -46,6 +50,7 @@ grub-mkconfig > /boot/grub/grub.cfg
 # Install grub:
 if efibootmgr > /dev/null; then 
     echo "Installing Grub for UEFI..."; 
+    grub-install --target=x86_64-efi /dev/sda
 else
     echo "Setting up the 1 MiB BIOS boot partition..."
     echo "Step 1: Backup the parititon table..."
@@ -116,6 +121,9 @@ else
 fi
 BASH
 
+# Install bash-completion:
+echo source /usr/share/bash-completion/bash_completion >> /etc/bash.bashrc
+
 echo "Adding $user to /etc/sudoers"
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
@@ -129,6 +137,10 @@ cd yay-bin
 sudo -u ${user} makepkg -si
 
 ln -s /usr/share/zoneinfo/UTC /etc/localtime
+
+systemctl enable cronie
+systemctl enable docker
+
 
 clear
 cat <<LETTER
@@ -153,6 +165,20 @@ We have done the following:
  - Set up to use Gentoo's PS1 for the CLI.
 
 For help and support see https://github.com/bitbasket/AutoArchLinux/
+
+For a more complete install, run this:
+
+    pacman -S --noconfirm certbot nginx mariadb postgresql smartmontools \
+        php php-redis php-pgsql php-sodium php-gd php-intl php-xsl php-sqlite \
+        php-snmp php-imagick composer php-fpm certbot-nginx
+    yay -S --noconfirm pam_ssh_agent_auth
+    echo auth  sufficient  pam_ssh_agent_auth.so file=/etc/security/authorized_keys >> /etc/pam.d/sudo
+    cat /home/USER/.ssh/id_ed25519.pub >> /etc/security/authorized_keys
+
+    systemctl enable nginx
+    systemctl enable php-fpm
+    systemctl enable postgressql
+    systemctl enable mariadb
 
 Now, reboot your system and pray that it all works fine.
 LETTER
